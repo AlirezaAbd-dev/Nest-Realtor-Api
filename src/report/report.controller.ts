@@ -10,7 +10,6 @@ import {
   ParseUUIDPipe,
   ParseEnumPipe,
 } from '@nestjs/common';
-import { AppService } from '../app.service';
 import {
   CreateReportDto,
   ReportResponseDto,
@@ -18,10 +17,11 @@ import {
 } from '../dtos/report.dto';
 
 import { ReportType } from '../data';
+import { ReportService } from './report.service';
 
 @Controller('report/:type')
 export default class ReportController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly appService: ReportService) {}
 
   @Get('')
   getAllReports(
