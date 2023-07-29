@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { AppService } from './app.service';
 
-import { ReportType, data } from './data';
+import { ReportType } from './data';
 
 @Controller('report/:type')
 export default class AppController {
