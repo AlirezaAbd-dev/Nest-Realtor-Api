@@ -11,7 +11,7 @@ import {
   ParseEnumPipe,
 } from '@nestjs/common';
 import { AppService } from './app.service';
-import {CreateReportDto} from "./dtos/report.dto"
+import { CreateReportDto } from './dtos/report.dto';
 
 import { ReportType } from './data';
 
