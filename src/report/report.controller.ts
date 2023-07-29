@@ -21,7 +21,7 @@ import { ReportService } from './report.service';
 
 @Controller('report/:type')
 export default class ReportController {
-  constructor(private readonly appService: ReportService) {}
+  constructor(private readonly reportService: ReportService) {}
 
   @Get('')
   getAllReports(
@@ -29,7 +29,7 @@ export default class ReportController {
   ): ReportResponseDto[] {
     const reportType =
       type === 'income' ? ReportType.INCOME : ReportType.EXPENSE;
-    return this.appService.getAllReports(reportType);
+    return this.reportService.getAllReports(reportType);
   }
 
   @Get(':id')
@@ -39,7 +39,7 @@ export default class ReportController {
   ): ReportResponseDto {
     const reportType =
       type === 'income' ? ReportType.INCOME : ReportType.EXPENSE;
-    return this.appService.getReportById(reportType, id);
+    return this.reportService.getReportById(reportType, id);
   }
 
   @Post()
@@ -49,7 +49,7 @@ export default class ReportController {
   ): ReportResponseDto {
     const reportType =
       type === 'income' ? ReportType.INCOME : ReportType.EXPENSE;
-    return this.appService.createReport(reportType, body);
+    return this.reportService.createReport(reportType, body);
   }
 
   @Put(':id')
@@ -60,12 +60,12 @@ export default class ReportController {
   ): ReportResponseDto {
     const reportType =
       type === 'income' ? ReportType.INCOME : ReportType.EXPENSE;
-    return this.appService.updateReport(reportType, id, body);
+    return this.reportService.updateReport(reportType, id, body);
   }
 
   @HttpCode(204)
   @Delete(':id')
   deleteReport(@Param('id', ParseUUIDPipe) id: string) {
-    return this.appService.deleteReport(id);
+    return this.reportService.deleteReport(id);
   }
 }
