@@ -1,4 +1,7 @@
 import { Module } from '@nestjs/common';
+import { SummaryController } from './summary.controller';
 
-@Module({})
+@Module({
+  controllers: [SummaryController]
+})
 export class SummaryModule {}
