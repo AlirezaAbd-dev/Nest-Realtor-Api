@@ -40,9 +40,7 @@ export class AuthService {
       },
     });
 
-    const token = this.generateJWT(user.name, user.id);
-
-    return token;
+    return this.generateJWT(user.name, user.id);
   }
 
   async signin(body: SigninParams) {
@@ -60,9 +58,7 @@ export class AuthService {
       throw new HttpException('Invalid credentials', 400);
     }
 
-    const token = this.generateJWT(user.name, user.id);
-
-    return token;
+    return this.generateJWT(user.name, user.id);
   }
 
   private async generateJWT(name: string, id: number) {
