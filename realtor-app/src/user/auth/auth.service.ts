@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 interface SignupTypes {
   name: string;
@@ -9,8 +10,10 @@ interface SignupTypes {
 
 @Injectable()
 export class AuthService {
-  signup(body: SignupTypes) {
+  constructor(private readonly prismaService: PrismaService) {}
+  async signup(body: SignupTypes) {
     console.log(body);
+    console.log(await this.prismaService.user.findMany());
     return;
   }
 }
