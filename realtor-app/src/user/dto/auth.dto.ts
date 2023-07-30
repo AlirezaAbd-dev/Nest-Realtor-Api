@@ -12,11 +12,12 @@ export class SignupDto {
   name: string;
 
   @Matches(
-    /(0|\+98)?([ ]|-|[()]){0,2}9[1|2|3|4]([ ]|-|[()]){0,2}(?:[0-9]([ ]|-|[()]){0,2}){8}/,
+    /(0|\+98)?([ ]|-|[()]){0,2}9[0|1|2|3|9]([ ]|-|[()]){0,2}(?:[0-9]([ ]|-|[()]){0,2}){8}/,
+    { message: 'phone must be a valid phone number!' },
   )
   phone: string;
 
-  @IsEmail()
+  @IsEmail({}, { message: 'email must be a valid email!' })
   email: string;
 
   @IsString()
