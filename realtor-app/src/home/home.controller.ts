@@ -7,7 +7,7 @@ export class HomeController {
 
   @Get()
   getHomes() {
-    return [];
+    return this.homeService.getHomes();
   }
 
   @Get(':id')
