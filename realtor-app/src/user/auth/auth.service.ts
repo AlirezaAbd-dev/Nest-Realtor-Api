@@ -2,6 +2,7 @@ import { ConflictException, HttpException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
+import { UserType } from '@prisma/client';
 
 interface SignupParams {
   name: string;
@@ -66,5 +67,11 @@ export class AuthService {
       expiresIn: 3600000,
     });
     return token;
+  }
+
+  async generateProductKey(email: string, userType: UserType) {
+    const string = `${email}-${userType}-${process.env.PRODUCT_KEY_SECRET}`;
+
+    return await bcrypt.hash(string, 10);
   }
 }
