@@ -1,4 +1,4 @@
-import { Image, Message, PropertyType, User } from '@prisma/client';
+import { PropertyType } from '@prisma/client';
 import { Expose, Exclude } from 'class-transformer';
 
 export class HomeResponseDto {
@@ -41,29 +41,12 @@ export class HomeResponseDto {
 
   @Exclude()
   created_at: Date;
-  @Expose({ name: 'createdAt' })
-  createdAt() {
-    return this.created_at;
-  }
 
   @Exclude()
   updated_at: Date;
-  @Expose({ name: 'updatedAt' })
-  updatedAt() {
-    return this.updated_at;
-  }
-
-  images: Image[];
 
   @Exclude()
   realtor_id: number;
-  @Expose({ name: 'realtorId' })
-  realtorId() {
-    return this.realtor_id;
-  }
-
-  realtor: User;
-  messages: Message;
 
   constructor(partial: Partial<HomeResponseDto>) {
     Object.assign(this, partial);
