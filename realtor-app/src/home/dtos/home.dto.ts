@@ -7,6 +7,9 @@ export class HomeResponseDto {
   image: string;
 
   @Exclude()
+  images: { url: string }[];
+
+  @Exclude()
   number_of_bedrooms: number;
   @Expose({ name: 'numberOfBedrooms' })
   numberOfBedrooms() {
