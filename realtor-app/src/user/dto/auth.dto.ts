@@ -24,3 +24,11 @@ export class SignupDto {
   @MinLength(5)
   password: string;
 }
+
+export class SigninDto {
+  @IsEmail({}, { message: 'email must be a valid email!' })
+  email: string;
+
+  @IsString()
+  password: string;
+}

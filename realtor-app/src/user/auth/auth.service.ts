@@ -1,12 +1,21 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+import { sign } from 'jsonwebtoken';
 
 interface SignupParams {
   name: string;
   email: string;
   phone: string;
+  password: string;
+}
+
+interface SigninParams {
+  email: string;
   password: string;
 }
 
@@ -35,8 +44,32 @@ export class AuthService {
       },
     });
 
-    jwt.sign({ email: user.email }, process.env.JWT_SECRET);
+    const token = sign({ email: user.email }, process.env.JWT_SECRET, {
+      expiresIn: 3600000,
+    });
 
-    return user;
+    return token;
+  }
+
+  async signin(body: SigninParams) {
+    const user = await this.prismaService.user.findFirst({
+      where: {
+        email: body.email,
+      },
+    });
+
+    if (!user) throw new ConflictException("this user doesn't exist");
+
+    const comparedPassword = await bcrypt.compare(body.password, user.password);
+
+    if (!comparedPassword) {
+      throw new NotFoundException('entered email or password is wrong!');
+    }
+
+    const token = sign({ email: user.email }, process.env.JWT_SECRET, {
+      expiresIn: 3600000,
+    });
+
+    return token;
   }
 }
