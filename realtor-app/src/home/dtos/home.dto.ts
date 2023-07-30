@@ -4,6 +4,7 @@ import { Expose, Exclude } from 'class-transformer';
 export class HomeResponseDto {
   id: number;
   address: string;
+  image: string;
 
   @Exclude()
   number_of_bedrooms: number;
