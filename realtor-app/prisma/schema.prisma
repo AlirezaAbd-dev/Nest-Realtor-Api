@@ -16,9 +16,9 @@ enum PropertyType {
 }
 
 enum UserType {
-  ADMIN
-  REALTOR
   BUYER
+  REALTOR
+  ADMIN
 }
 
 model User {
