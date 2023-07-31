@@ -2,7 +2,9 @@ import {
   Controller,
   Delete,
   Get,
+  Param,
   ParseEnumPipe,
+  ParseIntPipe,
   Post,
   Put,
   Query,
@@ -33,8 +35,8 @@ export class HomeController {
   }
 
   @Get(':id')
-  getHome() {
-    return {};
+  getHome(@Param('id', ParseIntPipe) id: number): Promise<HomeResponseDto> {
+    return this.homeService.getHomeById(id);
   }
 
   @Post()

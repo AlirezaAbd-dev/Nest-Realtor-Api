@@ -53,4 +53,37 @@ export class HomeService {
       (home) => new HomeResponseDto({ ...home, image: home.images[0].url }),
     );
   }
+
+  async getHomeById(id: number) {
+    const home = await this.prismaService.home.findFirst({
+      where: { id },
+      include: {
+        images: {
+          select: {
+            url: true,
+          },
+        },
+        messages: {
+          select: {
+            buyer_id: true,
+            realtor_id: true,
+            message: true,
+          },
+        },
+        realtor: {
+          select: {
+            name: true,
+            email: true,
+            phone: true,
+          },
+        },
+      },
+    });
+
+    if (!home) {
+      throw new NotFoundException();
+    }
+
+    return new HomeResponseDto(home);
+  }
 }
