@@ -154,7 +154,7 @@ export class HomeService {
   }
 
   @HttpCode(204)
-  async deleteHome(id: number) {
+  async deleteHomeById(id: number) {
     await this.prismaService.home.delete({
       where: {
         id,
