@@ -3,7 +3,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { HomeResponseDto } from './dtos/home.dto';
 import { PropertyType } from '@prisma/client';
 
-interface createHomeParams {
+interface CreateHomeParams {
   address: string;
   numberOfBedrooms: number;
   numberOfBathrooms: number;
@@ -12,6 +12,16 @@ interface createHomeParams {
   landSize: number;
   propertyType: PropertyType;
   images: { url: string }[];
+}
+
+interface UpdateHomeParams {
+  address?: string;
+  numberOfBedrooms?: number;
+  numberOfBathrooms?: number;
+  city?: string;
+  price?: number;
+  landSize?: number;
+  propertyType?: PropertyType;
 }
 
 @Injectable()
@@ -98,7 +108,7 @@ export class HomeService {
     return new HomeResponseDto(home);
   }
 
-  async createHome(body: createHomeParams) {
+  async createHome(body: CreateHomeParams) {
     const home = await this.prismaService.home.create({
       data: {
         address: body.address,
@@ -122,5 +132,24 @@ export class HomeService {
     });
 
     return new HomeResponseDto(home);
+  }
+
+  async updateHome(id: number, body: UpdateHomeParams) {
+    const home = await this.prismaService.home.findFirst({
+      where: {
+        id,
+      },
+    });
+
+    if (!home) throw new NotFoundException();
+
+    const updatedHome = await this.prismaService.home.update({
+      where: {
+        id,
+      },
+      data: body,
+    });
+
+    return new HomeResponseDto(updatedHome);
   }
 }
