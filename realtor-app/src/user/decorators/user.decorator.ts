@@ -1,11 +1,10 @@
-import { createParamDecorator } from '@nestjs/common';
-import jwt from "jsonwebtoken"
+import { ExecutionContext, createParamDecorator } from '@nestjs/common';
+import { CustomRequest } from '../interceptors/user.interceptor';
 
-const User = createParamDecorator(() => {
-  return {
-    id: 4,
-    name: 'Alireza',
-  };
+const User = createParamDecorator((data, context: ExecutionContext) => {
+  const req: CustomRequest = context.switchToHttp().getRequest();
+
+  return req.user;
 });
 
 export { User };
