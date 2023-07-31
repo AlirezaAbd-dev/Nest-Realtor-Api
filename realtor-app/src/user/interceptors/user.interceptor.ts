@@ -6,13 +6,15 @@ import {
 } from '@nestjs/common';
 import * as jwt from 'jsonwebtoken';
 
-interface User {
+export interface AuthorizedUserType {
   id: number;
   name: string;
+  iat: number;
+  exp: number;
 }
 
 export interface CustomRequest extends Request {
-  user?: User;
+  user?: AuthorizedUserType;
 }
 
 export class UserInterceptor implements NestInterceptor {
@@ -24,7 +26,7 @@ export class UserInterceptor implements NestInterceptor {
 
     try {
       const user = jwt.verify(token, process.env.JWT_SECRET);
-      req.user = user as User;
+      req.user = user as AuthorizedUserType;
     } catch (err) {
       throw new UnauthorizedException('you have to send the token');
     }
