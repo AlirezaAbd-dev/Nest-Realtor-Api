@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpCode, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { HomeResponseDto } from './dtos/home.dto';
 import { PropertyType } from '@prisma/client';
@@ -151,5 +151,16 @@ export class HomeService {
     });
 
     return new HomeResponseDto(updatedHome);
+  }
+
+  @HttpCode(204)
+  async deleteHome(id: number) {
+    await this.prismaService.home.delete({
+      where: {
+        id,
+      },
+    });
+
+    return;
   }
 }
