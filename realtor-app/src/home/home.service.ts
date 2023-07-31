@@ -112,7 +112,7 @@ export class HomeService {
       },
     });
 
-    const homeImages = await this.prismaService.image.createMany({
+    await this.prismaService.image.createMany({
       data: [
         ...body.images.map((image) => ({
           url: image.url,
@@ -121,6 +121,6 @@ export class HomeService {
       ],
     });
 
-    
+    return new HomeResponseDto(home);
   }
 }

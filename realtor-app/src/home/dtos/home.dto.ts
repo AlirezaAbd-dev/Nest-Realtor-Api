@@ -67,6 +67,8 @@ export class HomeResponseDto {
 }
 
 class Image {
+  @IsString()
+  @IsNotEmpty()
   url: string;
 }
 
@@ -100,6 +102,6 @@ export class CreateHomeDto {
 
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(()=> Image)
+  @Type(() => Image)
   images: Image[];
 }
