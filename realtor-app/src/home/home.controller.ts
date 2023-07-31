@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
   Param,
   ParseEnumPipe,
   ParseIntPipe,
@@ -53,6 +54,7 @@ export class HomeController {
     return this.homeService.updateHome(id, body);
   }
 
+  @HttpCode(204)
   @Delete(':id')
   deleteHome(@Param('id', ParseIntPipe) id: number) {
     return this.homeService.deleteHomeById(id);
