@@ -19,10 +19,11 @@ import { PropertyType, UserType } from '@prisma/client';
 import { User } from 'src/user/decorators/user.decorator';
 import { type AuthorizedUserType } from 'src/user/interceptors/user.interceptor';
 import { AuthGuard } from 'src/guards/auth.guard';
+import { Roles } from 'src/decorators/roles.decorator';
 
 @Controller('home')
 export class HomeController {
-  constructor(private readonly homeService: HomeService) {}
+  constructor(private readonly homeService: HomeService) { }
 
   @Get()
   getHomes(
@@ -46,11 +47,12 @@ export class HomeController {
     return this.homeService.getHomeById(id);
   }
 
-  // @Roles(UserType.REALTOR, UserType.ADMIN)
+  @Roles(UserType.REALTOR, UserType.ADMIN)
   @UseGuards(AuthGuard)
   @Post()
   createHome(@Body() body: CreateHomeDto, @User() user: AuthorizedUserType) {
-    return this.homeService.createHome(body, user.id);
+    return true
+    // return this.homeService.createHome(body, user.id);
   }
 
   @Put(':id')
