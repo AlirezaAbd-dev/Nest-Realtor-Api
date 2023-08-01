@@ -12,7 +12,7 @@ export class AuthGuard implements CanActivate {
 
     async canActivate(context: ExecutionContext) {
 
-        const roles = this.reflector.getAllAndOverride<UserType[]>("roles", [
+        const roles = this.reflector.getAllAndOverride<UserType[]>(process.env.ROLES_KEY, [
             context.getHandler(),
             context.getClass()
         ])
