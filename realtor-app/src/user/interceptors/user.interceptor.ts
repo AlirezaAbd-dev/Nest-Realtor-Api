@@ -25,8 +25,10 @@ export class UserInterceptor implements NestInterceptor {
     )[1];
 
     try {
-      const user = jwt.verify(token, process.env.JWT_SECRET);
-      req.user = user as AuthorizedUserType;
+      if (token) {
+        const user = jwt.verify(token, process.env.JWT_SECRET);
+        req.user = user as AuthorizedUserType;
+      }
     } catch (err) {
       throw new UnauthorizedException('you have to send the token');
     }

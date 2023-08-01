@@ -12,10 +12,10 @@ export class AuthGuard implements CanActivate {
 
     async canActivate(context: ExecutionContext) {
 
-        const roles = this.reflector.getAllAndOverride("roles", [
+        const roles = this.reflector.getAllAndOverride<UserType[]>("roles", [
             context.getHandler(),
             context.getClass()
-        ]) as UserType[]
+        ])
 
         if (roles?.length) {
             const req = context.switchToHttp().getRequest() as Request
@@ -28,20 +28,15 @@ export class AuthGuard implements CanActivate {
                         id: payload.id
                     }
                 })
-
+                console.log(roles)
+                console.log(user)
                 if (!user) return false
-
                 if (roles.includes(user.user_type)) return true
 
                 return false
             } catch (err) {
                 return false
             }
-
         }
-
-
-
-        return true
     }
 }
