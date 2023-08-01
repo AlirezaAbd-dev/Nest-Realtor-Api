@@ -14,7 +14,7 @@ import {
 } from '@nestjs/common';
 import { HomeService } from './home.service';
 import { CreateHomeDto, HomeResponseDto, updateHomeDto } from './dtos/home.dto';
-import { PropertyType } from '@prisma/client';
+import { PropertyType, UserType } from '@prisma/client';
 import { User } from 'src/user/decorators/user.decorator';
 import { type AuthorizedUserType } from 'src/user/interceptors/user.interceptor';
 
@@ -44,6 +44,7 @@ export class HomeController {
     return this.homeService.getHomeById(id);
   }
 
+  // @Roles(UserType.REALTOR, UserType.ADMIN)
   @Post()
   createHome(@Body() body: CreateHomeDto, @User() user: AuthorizedUserType) {
     return this.homeService.createHome(body, user.id);
