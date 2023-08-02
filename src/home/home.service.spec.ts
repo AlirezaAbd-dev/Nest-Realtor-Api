@@ -154,5 +154,20 @@ describe('HomeService', () => {
         },
       })
     })
+
+    it("should call prisma home.createMany with the correct payload", async () => {
+      const mockCreateManyImage = jest.fn().mockReturnValue(mockImages)
+
+      jest.spyOn(prismaService.image, "createMany").mockImplementation(mockCreateManyImage)
+
+      await service.createHome(mockCreateHomeParams, 2)
+
+      expect(mockCreateManyImage).toBeCalledWith({
+        data: [{
+          url: "src1",
+          home_id: 1
+        }]
+      })
+    })
   })
 });
