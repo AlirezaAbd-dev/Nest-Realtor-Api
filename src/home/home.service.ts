@@ -200,4 +200,12 @@ export class HomeService {
       }
     })
   }
+
+  getMessagesByHome(homeId: number) {
+    return this.prismaService.message.findMany({
+      where: {
+        home_id: homeId
+      }
+    })
+  }
 }
