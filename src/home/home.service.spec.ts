@@ -10,15 +10,34 @@ const mockGetHomes = [
     address: "2345 William Str",
     city: "Toronto",
     price: 1500000,
-    propertyType: PropertyType.RESIDENTIAL,
+    property_type: PropertyType.RESIDENTIAL,
     image: "img1",
-    numberOfBedrooms: 3,
-    numberOfBathrooms: 2.5,
+    number_of_bedrooms: 3,
+    number_of_bathrooms: 2.5,
     images: [{
       url: "src1"
     }]
   }
 ]
+
+const mockHome = {
+  id: 1,
+  address: "2345 William Str",
+  city: "Toronto",
+  price: 1500000,
+  property_type: PropertyType.RESIDENTIAL,
+  image: "img1",
+  number_of_bedrooms: 3,
+  number_of_bathrooms: 2.5,
+}
+
+const mockImages = [{
+  id: 1,
+  url: "src1"
+}, {
+  id: 2,
+  url: "src2"
+}]
 
 describe('HomeService', () => {
   let service: HomeService;
@@ -30,7 +49,11 @@ describe('HomeService', () => {
         provide: PrismaService,
         useValue: {
           home: {
-            findMany: jest.fn().mockReturnValue([mockGetHomes])
+            findMany: jest.fn().mockReturnValue([mockGetHomes]),
+            create: jest.fn().mockReturnValue(mockHome)
+          },
+          image: {
+            createMany: jest.fn().mockReturnValue(mockImages)
           }
         }
       }],
@@ -94,6 +117,42 @@ describe('HomeService', () => {
       jest.spyOn(prismaService.home, "findMany").mockImplementation(mockPrismaFindManyHomes)
 
       await expect(service.getHomes(city, maxPrice, minPrice, propertyType)).rejects.toThrowError(NotFoundException)
+    })
+  })
+
+  describe("createHome", () => {
+    const mockCreateHomeParams = {
+      address: "111 Yellow Str",
+      city: "Vancouver",
+      landSize: 4444,
+      numberOfBathrooms: 2,
+      numberOfBedrooms: 2,
+      price: 3000000,
+      propertyType: PropertyType.RESIDENTIAL,
+      images: [{
+        url: "src1"
+      }]
+    }
+
+    it("should call prisma home.create with the correct payload", async () => {
+      const mockCreateHome = jest.fn().mockReturnValue(mockHome)
+
+      jest.spyOn(prismaService.home, "create").mockImplementation(mockCreateHome)
+
+      await service.createHome(mockCreateHomeParams, 2)
+
+      expect(mockCreateHome).toBeCalledWith({
+        data: {
+          address: "111 Yellow Str",
+          city: "Vancouver",
+          land_size: 4444,
+          number_of_bathrooms: 2,
+          number_of_bedrooms: 2,
+          price: 3000000,
+          propertyType: PropertyType.RESIDENTIAL,
+          realtor_id: 2,
+        },
+      })
     })
   })
 });
