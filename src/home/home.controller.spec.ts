@@ -35,7 +35,7 @@ describe('HomeController', () => {
         useValue: {
           getHomes: jest.fn().mockReturnValue([]),
           getRealtorByHomeId: jest.fn().mockReturnValue(mockUser),
-          updateHomeById: jest.fn().mockReturnValue(mockHome)
+          updateHome: jest.fn().mockReturnValue(mockHome),
         }
       }, PrismaService]
     }).compile();
@@ -54,7 +54,7 @@ describe('HomeController', () => {
   })
 
   describe('updateHome', () => {
-    const mockCreateHomeParams = {
+    const mockUpdateHomeParams = {
       address: "111 Yellow Str",
       city: "Vancouver",
       landSize: 4444,
@@ -73,10 +73,19 @@ describe('HomeController', () => {
 
     it("should throw unauth error if realtor didn't create home", async () => {
       const run = async () => {
-        await controller.updateHome(2, mockCreateHomeParams, mockUserInfo)
+        await controller.updateHome(2, mockUpdateHomeParams, mockUserInfo)
       }
 
       await expect(run).rejects.toThrowError(UnauthorizedException)
+    })
+
+    it("should update home if realtor id is valid", async () => {
+      const mockUpdateHome = jest.fn().mockReturnValue(mockHome)
+      jest.spyOn(homeService, "updateHome").mockImplementation(mockUpdateHome)
+
+      await controller.updateHome(5, mockUpdateHomeParams, { ...mockUserInfo, id: 8 })
+
+      expect(mockUpdateHome).toBeCalled()
     })
   })
 });
