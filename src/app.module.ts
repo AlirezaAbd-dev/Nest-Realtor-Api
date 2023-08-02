@@ -8,23 +8,23 @@ import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { UserInterceptor as UserInterceptorClass } from './user/interceptors/user.interceptor';
 import { AuthGuard as AuthGuardClass } from './guards/auth.guard';
 
-const UserInterceptor: Provider = {
-  provide: APP_INTERCEPTOR,
-  useClass: UserInterceptorClass,
-}
-
-const AuthGuard: Provider = {
-  provide: APP_GUARD,
-  useClass: AuthGuardClass,
-}
+const providers: Provider[] = [
+  {
+    provide: APP_INTERCEPTOR,
+    useClass: UserInterceptorClass,
+  },
+  {
+    provide: APP_GUARD,
+    useClass: AuthGuardClass,
+  }
+]
 
 @Module({
   imports: [UserModule, PrismaModule, HomeModule],
   controllers: [AppController],
   providers: [
     AppService,
-    UserInterceptor,
-    AuthGuard
+    ...providers
   ],
 })
 export class AppModule { }
