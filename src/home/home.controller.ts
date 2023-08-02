@@ -31,12 +31,6 @@ export class HomeController {
     @Query('propertyType', new ParseEnumPipe(PropertyType, { optional: true }))
     propertyType?: PropertyType,
   ): Promise<HomeResponseDto[]> {
-    console.log({
-      city,
-      maxPrice,
-      minPrice,
-      propertyType,
-    });
     return this.homeService.getHomes(city, maxPrice, minPrice, propertyType);
   }
 

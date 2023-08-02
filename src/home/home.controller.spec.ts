@@ -5,17 +5,29 @@ import { HomeService } from './home.service';
 
 describe('HomeController', () => {
   let controller: HomeController;
+  let homeService: HomeService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [HomeController],
-      providers: [HomeService, PrismaService]
+      providers: [{
+        provide: HomeService,
+        useValue: {
+          getHomes: jest.fn().mockReturnValue([])
+        }
+      }, PrismaService]
     }).compile();
 
     controller = module.get<HomeController>(HomeController);
+    homeService = module.get<HomeService>(HomeService);
   });
 
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
-  });
+  describe('getHomes', () => {
+    it("should contruct filter object correctly", async () => {
+      const mockGetHomes = jest.fn().mockReturnValue([])
+      jest.spyOn(homeService, "getHomes").mockImplementation(mockGetHomes)
+      await controller.getHomes("Tronto", undefined, "1500000")
+      expect(mockGetHomes).toBeCalledWith("Tronto", undefined, "1500000", undefined)
+    })
+  })
 });
